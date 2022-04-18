@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Categories {
+  id   Int    @id @default(autoincrement())
+  name String
+
+
+
+
+  Categories_products Categories_products[]
+  @@map("categories")
+}
+
+model Products {
+  id           Int      @id @default(autoincrement())
+  name         String
+  image_url    String
+  price_before Decimal  @db.Decimal(10, 0)
+  price_after  Decimal  @db.Decimal(10, 0)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now())
+
+
+  Categories_products Categories_products[]
+  Brands              Brands[]
+  Carts               Carts[]
+  Reviews             Reviews[]
+  @@map("products")
+}
+
+model Reviews {
+  id         Int      @id @default(autoincrement())
+  rating     Int
+  content    String
+  image      String?
+  user_id    Int
+  product_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  products Products @relation(fields: [product_id], references: [id])
+  users    Users    @relation(fields: [user_id], references: [id])
+
+
+  Reviews_likes Reviews_likes[]
+  @@map("reviews")
+}
+
+model Users {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  deleted_at DateTime @default(now())
+
+
+  Carts         Carts[]
+  Reviews       Reviews[]
+  Reviews_likes Reviews_likes[]
+  @@map("users")
+}
+
+model Carts {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  user_id    Int
+  quantity   Int
+  created_at DateTime @default(now())
+
+  products Products @relation(fields: [product_id], references: [id])
+  users    Users    @relation(fields: [user_id], references: [id])
+  @@map("carts")
+}
+
+model Reviews_likes {
+  id        Int @id @default(autoincrement())
+  user_id   Int
+  review_id Int
+
+  reviews Reviews @relation(fields: [review_id], references: [id])
+  users   Users   @relation(fields: [user_id], references: [id])
+  @@map("reviews_likes")
+}
+
+model Brands {
+  id Int @id @default(autoincrement())
+
+  name       String
+  product_id Int
+
+
+
+  products Products @relation(fields: [product_id], references: [id])
+  @@map("brands")
+}
+
+model Categories_products {
+  id          Int @id @default(autoincrement())
+  product_id  Int
+  category_id Int
+
+
+
+  categories Categories @relation(fields: [category_id], references: [id])
+  products   Products   @relation(fields: [product_id], references: [id])
+
+  @@map("categories_products")
+}
