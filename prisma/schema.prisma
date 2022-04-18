@@ -14,9 +14,6 @@ model Categories {
   id   Int    @id @default(autoincrement())
   name String
 
-
-
-
   Categories_products Categories_products[]
   @@map("categories")
 }
