@@ -26,12 +26,15 @@ model Products {
   price_after  Decimal  @db.Decimal(10, 0)
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
+  brand_id     Int
 
 
   Categories_products Categories_products[]
-  Brands              Brands[]
-  Carts               Carts[]
-  Reviews             Reviews[]
+  brands              Brands                @relation(fields: [brand_id], references: [id])
+
+  Carts   Carts[]
+  Reviews Reviews[]
+
   @@map("products")
 }
 
@@ -92,14 +95,10 @@ model Reviews_likes {
 }
 
 model Brands {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
+  name String
 
-  name       String
-  product_id Int
-
-
-
-  products Products @relation(fields: [product_id], references: [id])
+  Products Products[]
   @@map("brands")
 }
 
