@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const signUp = async (username, email, password) => {
 
-    const user = await userDao.getUserEmail(email)
-
+    const user = await userDao.getUserInfo(email)
     if (user.length !== 0) {
         const error = new Error('EXISTING_EMAIL')
         error.statusCode = 409

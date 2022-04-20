@@ -19,7 +19,18 @@ const signUp = async (req, res) => {
 
 
 
+const signIn = async (req, res) => {
+    try {
+
+    } catch (err) {
+        console.log(err);
+        return res.status(err.statuscode || 500).json({ message: err.message });
+    }
+}
+
+
 
 module.exports = {
-    signUp
+    signUp,
+    
 };

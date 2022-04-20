@@ -8,6 +8,7 @@ const getUserEmail = async (email) => {
 	`
 }
 
+
 const getUserInfo = async (email) => {
     return await prisma.$queryRaw`
 		SELECT id, email, password FROM users WHERE users.email = ${email};
@@ -20,8 +21,6 @@ const createuUser = async (username, email, encryptedPW) => {
         INSERT INTO users(username, email, password) VALUES (${username}, ${email}, ${encryptedPW});
     `
 }
-
-
 
 
 module.exports = {
