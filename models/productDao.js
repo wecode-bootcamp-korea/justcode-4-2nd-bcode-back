@@ -10,7 +10,6 @@ const getProductDetail = async (product_id) => {
       price_after: true,
       brands: {
         select: {
-          id: true,
           name: true
         }
       },
