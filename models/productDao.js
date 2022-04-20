@@ -8,13 +8,13 @@ const getProductDetail = async (product_id) => {
       image_url: true,
       price_before: true,
       price_after: true,
-      Brands: {
+      brands: {
         select: {
           id: true,
           name: true
         }
       },
-      Reviews: {
+      reviews: {
         select: {
           id: true,
           rating: true,
@@ -22,7 +22,7 @@ const getProductDetail = async (product_id) => {
           image: true,
           user_id: true,
           product_id: true,
-          Reviews_likes: {
+          reviews_likes: {
             select: {
               id: true
             }
