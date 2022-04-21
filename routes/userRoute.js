@@ -7,7 +7,7 @@ const userController = require("../controllers/userController")
 
 
 router.post('/signup', middleware.validateForm, userController.signUp);
-router.post('/signin', userController.login);
+router.post('/signin', userController.signIn);
 
 
 module.exports = router;
