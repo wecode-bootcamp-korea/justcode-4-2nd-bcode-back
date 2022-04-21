@@ -1,6 +1,6 @@
 const reviewService = require('../services/reviewService');
 const jwt = require('jsonwebtoken');
-const YOUR_SECRET_KET = process.env.SECRET_KEY;
+const SECRET_KEY = process.env.SECRET_KEY;
 const multer = require("multer");
 const path = require("path");
 const fs = require('fs');
@@ -11,7 +11,6 @@ const getReviews = async (req, res) => {
     const { productId, limit } = req.query;
 
     const reviews = await reviewService.getReviews(productId, limit);
-    console.log(productId, limit, reviews)
 
     return res.status(200).json({ message: "SUCCESS", reviews: reviews });
   } catch (error) {
@@ -26,8 +25,8 @@ const makeReview = async (req, res) => {
     const { productId, rating, content } = req.body;
 
     const reviews = await reviewService.makeReview(productId, userid, rating, content)
+    
     return res.status(200).json({ message: "SUCCESS", reviews: reviews})
-
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error.message })
@@ -37,6 +36,8 @@ const makeReview = async (req, res) => {
 const uploadReviewImage = async (req, res) => {
   try {
     const { reviewId } = req.query;
+    let uploadFileName = ""
+
     // upload 폴더 지정 (없으면 생성)
     try {
       fs.readdirSync(`./data/uploads/review${reviewId}`)
@@ -53,7 +54,8 @@ const uploadReviewImage = async (req, res) => {
         // 업로드된 이미지 파일 이름 지정
         filename(req, file, cb) {
           const ext = path.extname(file.originalname);
-          cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+          uploadFileName = path.basename(file.originalname, ext) + Date.now() + ext
+          cb(null, uploadFileName);
         },
       }),
       // 파일 크기 제한 10MB
@@ -67,7 +69,9 @@ const uploadReviewImage = async (req, res) => {
       }
     })
 
-    const reviewImageAddr = `data/uploads/review${reviewId}/`;
+    const reviewImageAddr = `data/uploads/review${reviewId}/${uploadFileName}`;
+
+    console.log(reviewImageAddr)
 
     await reviewService.uploadReviewImage(reviewId, reviewImageAddr);
     return res.status(200).sendFile(reviewImageAddr, { root: '.' });
@@ -77,9 +81,22 @@ const uploadReviewImage = async (req, res) => {
   }
 };
 
+const deleteReview = async (req, res) => {
+  try {
+    const { reviewId } = req.body;
+
+    await reviewService.deleteReview(reviewId);
+    
+    return res.status(200).json({ message: "SUCCESS" })
+  } catch (error) {
+    console.log(error)
+    res.status(error.statusCode || 500).json({ message: error.message });
+  }
+}
 
 module.exports = {
   getReviews, 
   makeReview,
-  uploadReviewImage
+  uploadReviewImage,
+  deleteReview
 }

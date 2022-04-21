@@ -10,5 +10,8 @@ router.get("/", reviewController.getReviews);
 router.post("/", reviewController.makeReview);
 router.post("/image", reviewController.uploadReviewImage);
 
+// DELETE
+router.delete("/", reviewController.deleteReview);
+
 
 module.exports = router

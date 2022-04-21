@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 const getReviews = async (productId, limit) => {
   return await prisma.reviews.findMany({
-    take: Number(limit),
+    take: limit,
     where: {
-      product_id: Number(productId)
+      product_id: productId
     },
     select: {
       id: true,
@@ -19,7 +19,8 @@ const getReviews = async (productId, limit) => {
       rating: true,
       content: true,
       image: true,
-      created_at: true
+      created_at: true,
+      updated_at: true
     }
   })
 };
@@ -27,32 +28,37 @@ const getReviews = async (productId, limit) => {
 const makeReview = async (productId, userId, rating, content) => {
   return await prisma.reviews.create({
     data: {
-      product_id: Number(productId),
-      user_id: Number(userId),
-      rating: Number(rating),
+      product_id: productId,
+      user_id: userId,
+      rating: rating,
       content: content
     }
   })
 }
 
 const uploadReviewImage = async (reviewId, reviewImageAddr) => {
-  try {
-    return await prisma.reviews.update({
-      where: {
-        id: Number(reviewId)
-      },
-      data: {
-        image: reviewImageAddr
-      }
-    })
-  } catch (error) {
-    throw await error;
-  }
+  return await prisma.reviews.update({
+    where: {
+      id: reviewId
+    },
+    data: {
+      image: reviewImageAddr
+    }
+  })
 };
+
+const deleteReview = async (reviewId) => {
+  return await prisma.reviews.delete({
+    where: {
+      id: reviewId
+    }
+  })
+}
 
 
 module.exports = {
   getReviews,
   makeReview,
-  uploadReviewImage
+  uploadReviewImage,
+  deleteReview
 };
