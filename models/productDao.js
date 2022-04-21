@@ -36,8 +36,14 @@ const getProductDetail = async (product_id) => {
           rating: true,
           content: true,
           image: true,
-          user_id: true,
+          users: {
+            select: {
+              id: true,
+              username:true
+            }
+          },
           product_id: true,
+          created_at:true,
           reviews_likes: {
             select: {
               id: true
