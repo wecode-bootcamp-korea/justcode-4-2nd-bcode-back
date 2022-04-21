@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const signUp = async (username, email, password) => {
 
-    const user = await userDao.getUserEmail(email)
-
+    const user = await userDao.getUserInfo(email)
     if (user.length !== 0) {
         const error = new Error('EXISTING_EMAIL')
         error.statusCode = 409
@@ -19,9 +18,30 @@ const signUp = async (username, email, password) => {
 
 }
 
+const signIn = async (email, password) => {
 
+    const userInfo = await userDao.getUserInfo(email)
+
+    if (userInfo.length === 0) {
+        const error = new Error('INVALID_USER')
+        error.statusCode = 400
+        throw error
+    }
+
+    const isCorrect = bcrypt.compareSync(password, userInfo[0].password)
+
+    if (!isCorrect) {
+        const error = new Error('INVALID_USER')
+        error.statusCode = 400
+        throw error
+    }
+
+    const token = jwt.sign({ userId: user[0].id }, pocess.env.SECRET_KEY)
+    console.log(token)
+    return jwt.sign({ userId: user[0].id }, pocess.env.SECRET_KEY)
+}
 
 module.exports = {
-    signUp
-
+    signUp,
+    signIn
 }
