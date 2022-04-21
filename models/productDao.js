@@ -1,6 +1,23 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const getProductList = async () => {
+  return await prisma.products.findMany({
+    select: {
+      id: true,
+      name: true,
+      image_url: true,
+      price_before: true,
+      price_after: true,
+      brands: {
+        select: {
+          name: true
+        }
+      }
+    }
+  })
+}
+
 const getProductDetail = async (product_id) => {
   return await prisma.products.findUnique({
     select: {
@@ -10,7 +27,6 @@ const getProductDetail = async (product_id) => {
       price_after: true,
       brands: {
         select: {
-          id: true,
           name: true
         }
       },
@@ -38,5 +54,6 @@ const getProductDetail = async (product_id) => {
 
 
 module.exports = {
+  getProductList,
   getProductDetail
 };
