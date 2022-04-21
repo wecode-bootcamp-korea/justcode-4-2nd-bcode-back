@@ -2,7 +2,7 @@ const cartDao = require("../models/cartDao");
 
 const updateCart = async (product_id, user_id, quantity) => {
   try {
-    const currentCart = await cartDao.getCurrentCart(user_id)
+    const currentCart = await cartDao.getCurrentCart(Number(user_id))
     const doesItExist = await Promise.all(currentCart.map((cart) => 
       { return cart.products.id === Number(product_id)? 1 : 0 }
     ))
@@ -23,7 +23,7 @@ const updateCart = async (product_id, user_id, quantity) => {
 const deleteItemFromCart = async (product_id, user_id) => {
   try {
     await cartDao.deleteItemFromCart(Number(product_id), Number(user_id))
-    return await cartDao.getCurrentCart(user_id)
+    return await cartDao.getCurrentCart(Number(user_id))
   } catch (error) {
     throw await error
   }
