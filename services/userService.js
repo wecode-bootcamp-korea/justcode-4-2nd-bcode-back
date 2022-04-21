@@ -21,7 +21,6 @@ const signUp = async (username, email, password) => {
 const signIn = async (email, password) => {
 
     const userInfo = await userDao.getUserInfo(email)
-
     if (userInfo.length === 0) {
         const error = new Error('INVALID_USER')
         error.statusCode = 400
@@ -35,11 +34,9 @@ const signIn = async (email, password) => {
         error.statusCode = 400
         throw error
     }
-
-    const token = jwt.sign({ userId: user[0].id }, pocess.env.SECRET_KEY)
-    console.log(token)
-    return jwt.sign({ userId: user[0].id }, pocess.env.SECRET_KEY)
+    return jwt.sign({ userId: userInfo[0].email }, process.env.SECRET_KEY)
 }
+
 
 module.exports = {
     signUp,

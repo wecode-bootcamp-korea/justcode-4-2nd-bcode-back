@@ -1,6 +1,6 @@
 
 
-const validateForm = async (req, res, next) => {
+const validateSignUp = async (req, res, next) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -10,4 +10,16 @@ const validateForm = async (req, res, next) => {
     next();
 }
 
-module.exports = { validateForm }
+
+const validateSignIn = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        res.status(400).json({ message: "KEY_ERROR" });
+        return;
+    }
+    next();
+}
+
+
+module.exports = { validateSignUp, validateSignIn }
