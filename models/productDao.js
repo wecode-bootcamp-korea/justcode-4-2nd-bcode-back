@@ -18,7 +18,7 @@ const getProductList = async () => {
   })
 }
 
-const getProductDetail = async (product_id) => {
+const getProductDetail = async (product_id, limit) => {
   return await prisma.products.findUnique({
     select: {
       name: true,
@@ -31,6 +31,7 @@ const getProductDetail = async (product_id) => {
         }
       },
       reviews: {
+        take: limit,
         select: {
           id: true,
           rating: true,

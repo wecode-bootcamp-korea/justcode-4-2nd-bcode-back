@@ -14,7 +14,9 @@ const getProductList = async (req, res) => {
 const getProductDetail = async (req, res) => {
   try {
     const { product_id } = req.params;
-    const productDetail = await productService.getProductDetail(product_id)    
+    const { limit } = req.query;
+
+    const productDetail = await productService.getProductDetail(product_id, limit)    
   
     return res.status(200).json(productDetail)
   } catch (error) {
