@@ -6,9 +6,7 @@ require('dotenv').config();
 const signUp = async (req, res) => {
     try {
         const { username, email, password } = req.body;
-
         await userService.signUp(username, email, password);
-
         res.status(201).json({ message: 'SIGNUP_SUCCESS' })
 
     } catch (err) {
@@ -18,11 +16,9 @@ const signUp = async (req, res) => {
 }
 
 
-
 const signIn = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const token = await userService.signIn(email, password)
         return res.status(200).json({ message: 'LOGIN_SUCCESS', jwt: token })
     } catch (err) {
@@ -32,8 +28,8 @@ const signIn = async (req, res) => {
 }
 
 
-
 module.exports = {
     signUp,
     signIn
 };
+
