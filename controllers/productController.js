@@ -6,8 +6,7 @@ const getProductList = async (req, res) => {
 
     return res.status(200).json(productList)
   } catch (error) {
-    console.log(error.message)
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: "SERVER_ERROR" })
   }
 }
 
@@ -20,7 +19,7 @@ const getProductDetail = async (req, res) => {
   
     return res.status(200).json(productDetail)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: "SERVER_ERROR" })
   }
 }
 
