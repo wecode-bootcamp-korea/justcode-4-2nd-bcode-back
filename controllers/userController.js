@@ -15,15 +15,14 @@ const signUp = async (req, res) => {
     }
 }
 
-
 const signIn = async (req, res) => {
     try {
         const { email, password } = req.body;
         const token = await userService.signIn(email, password)
-        return res.status(200).json({ message: 'LOGIN_SUCCESS', jwt: token })
+        return res.status(200).json({ message: 'LOGIN_SUCCESS', id: token[0], jwt: token[1] })
     } catch (err) {
         console.log(err);
-        return res.status(err.statuscode || 500).json({ message: err.message });
+        return res.status(err.statusCode || 500).json({ message: err.message });
     }
 }
 

@@ -34,11 +34,18 @@ const signIn = async (email, password) => {
         error.statusCode = 400
         throw error
     }
-    return jwt.sign({ userId: userInfo[0].email }, process.env.SECRET_KEY)
+
+    return [userInfo[0].id, jwt.sign({ userId: userInfo[0].email }, process.env.SECRET_KEY)]
 }
+
+const getUserInfo = async (userId) => {
+    return await userDao.getUserInfo(userId);
+}
+
 
 
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    getUserInfo
 }
