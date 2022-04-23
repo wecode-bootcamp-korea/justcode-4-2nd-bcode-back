@@ -27,10 +27,11 @@ const validateToken = async (req, res, next) => {
             throw await res.status(404).json({ message: 'USER_NOT_FOUND' })
         }
 
+        next();
+        
     } catch (err) {
         return res.status(err.statuscode || 500).json({ message: err.message });
     }
-    next();
 }
 
 
