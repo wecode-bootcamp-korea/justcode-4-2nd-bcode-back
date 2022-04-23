@@ -7,7 +7,7 @@ const validateToken = async (req, res, next) => {
     try {
 
         const accessToken = await req.headers.authorization;
-        Token = accessToken.split(" ");
+        Token = accessToken.split(" ");    // 추후 삭제 확인 // postman 에서 Baerer Token 형식으로 들어와서 만듬
         realToken = Token[1]
 
         if (!realToken || realToken === "null" || realToken === undefined) {
