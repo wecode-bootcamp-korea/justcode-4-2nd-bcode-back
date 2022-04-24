@@ -19,13 +19,13 @@ const validateToken = async (req, res, next) => {
         }
 
         const findUser = await userService.getUserInfo(email);
-        id = findUser[0].id
+        userId = findUser[0].id
 
         if (!findUser || findUser === "null" || findUser === undefined) {
             throw await res.status(404).json({ message: 'USER_NOT_FOUND' })
         }
 
-        next(id);
+        next(userId);
 
     } catch (err) {
         return res.status(err.statusCode || 500).json({ message: err.message });
