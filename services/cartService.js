@@ -1,7 +1,7 @@
 const cartDao = require("../models/cartDao");
 
 
-const currentCart = async (user_id) => {
+const getCurrentCart = async (user_id) => {
   try {
     return await cartDao.getCurrentCart(Number(user_id))
   } catch (error) {
@@ -39,7 +39,7 @@ const deleteItemFromCart = async (product_id, user_id) => {
 }
 
 module.exports = {
-  currentCart,
+  getCurrentCart,
   updateCart,
   deleteItemFromCart
 };
