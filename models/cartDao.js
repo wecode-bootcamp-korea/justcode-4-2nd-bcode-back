@@ -27,7 +27,7 @@ const getCurrentCart = async (user_id) => {
   })
 }
 
-const addItemToCart = async (product_id, user_id, quantity) => {
+const addNewItemToCart = async (product_id, user_id, quantity) => {
   return await prisma.carts.create({
     data: {
       product_id: product_id,
@@ -37,16 +37,30 @@ const addItemToCart = async (product_id, user_id, quantity) => {
   })
 }
 
-const updateItemInCart = async (product_id, user_id, quantity) => {
-  return await prisma.carts.update({
-    where: {
-      product_id: product_id,
-      user_id: user_id
-    },
-    data: {
-      quantity: quantity
-    }
-  })
+const addMoreItemToCart = async (product_id, user_id, quantity, prevQuantity) => {
+  return await prisma.$queryRaw`
+    UPDATE
+    carts
+    SET
+    quantity = ${prevQuantity + quantity}
+    WHERE
+    product_id = ${product_id} AND
+    user_id = ${user_id}
+    ;
+  `
+}
+
+const updateItemInCart = async (product_id, user_id, setQuantity) => {
+  return await prisma.$queryRaw`
+    UPDATE
+    carts
+    SET
+    quantity = ${setQuantity}
+    WHERE
+    product_id = ${product_id} AND
+    user_id = ${user_id}
+    ;
+  `
 }
 
 const deleteItemFromCart = async (product_id, user_id) => {
@@ -61,7 +75,8 @@ const deleteItemFromCart = async (product_id, user_id) => {
 
 module.exports = {
   getCurrentCart,
-  addItemToCart,
+  addNewItemToCart,
+  addMoreItemToCart,
   updateItemInCart,
   deleteItemFromCart
 };
