@@ -28,9 +28,9 @@ const validateToken = async (req, res, next) => {
         }
 
         next();
-        
+
     } catch (err) {
-        return res.status(err.statuscode || 500).json({ message: err.message });
+        return res.status(err.statusCode || 500).json({ message: err.message });
     }
 }
 
