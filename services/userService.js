@@ -35,11 +35,11 @@ const signIn = async (email, password) => {
         throw error
     }
 
-    return [userInfo[0].id, jwt.sign({ userId: userInfo[0].email }, process.env.SECRET_KEY)]
+    return [userInfo[0].id, jwt.sign({ email: userInfo[0].email }, process.env.SECRET_KEY)]
 }
 
-const getUserInfo = async (userId) => {
-    return await userDao.getUserInfo(userId);
+const getUserInfo = async (email) => {
+    return await userDao.getUserInfo(email);
 }
 
 
