@@ -8,7 +8,6 @@ const cartRoute = require("./cartRoute");
 const reviewRoute = require("./reviewRoute");
 
 
-
 router.use('/user', userRoute)
 router.use('/product', productRoute)
 router.use('/cart', cartRoute)
