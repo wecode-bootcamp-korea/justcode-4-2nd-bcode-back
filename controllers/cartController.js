@@ -2,15 +2,33 @@ const cartService = require('../services/cartService');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const updateCart = async (req, res) => {
+
+const getCurrentCart = async (req, res) => {
   try {
-    const { product_id, quantity } = req.params
     // const { token } = req.headers
 
-    // const user_id = jwt.verify(token, SECRET_KEY)
-    const itemsInCart = await cartService.updateCart(product_id, 1, quantity)
+    // const userId = jwt.verify(token, SECRET_KEY).userId
+    const userId = 1  // test용
+    const currentCart = await cartService.getCurrentCart(userId)
 
-    return res.status(200).json({ message: itemsInCart })
+    return res.status(200).json(currentCart)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+const updateCart = async (req, res) => {
+  try {
+    // const { token } = req.headers
+    const { productId } = req.params
+    const { quantity, setQuantity } = req.query
+
+    // const userId = jwt.verify(token, SECRET_KEY)
+    const userId = 1  // test용
+    const itemsInCart = await cartService.updateCart(productId, userId, quantity, setQuantity)
+
+    return res.status(200).json({ currentCart: itemsInCart })
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: error.message })
@@ -19,13 +37,14 @@ const updateCart = async (req, res) => {
 
 const deleteItemFromCart = async (req, res) => {
   try {
-    const { product_id } = req.params
     // const { token } = req.headers
+    const { productId } = req.params
 
-    // const user_id = jwt.verify(token, SECRET_KEY)
-    const itemsInCart = await cartService.deleteItemFromCart(product_id, 1)
+    // const userId = jwt.verify(token, SECRET_KEY)
+    const userId = 1  // test용
+    const itemsInCart = await cartService.deleteItemFromCart(productId, userId)
 
-    return res.status(200).json({ message: itemsInCart })
+    return res.status(200).json({ currentCart: itemsInCart })
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: error.message })
@@ -34,6 +53,7 @@ const deleteItemFromCart = async (req, res) => {
 
 
 module.exports = {
+  getCurrentCart,
   updateCart,
   deleteItemFromCart
 }

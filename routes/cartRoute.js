@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const cartController = require("../controllers/cartController");
+const validateToken = require("../middlewares/validateToken");
 
-router.post("/:product_id/:quantity", cartController.updateCart)
-router.delete("/:product_id", cartController.deleteItemFromCart)
+router.get("/now", cartController.getCurrentCart)
+router.put("/:productId", cartController.updateCart)
+router.delete("/:productId", cartController.deleteItemFromCart)
 
 
 module.exports = router
