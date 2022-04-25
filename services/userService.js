@@ -35,7 +35,11 @@ const signIn = async (email, password) => {
         throw error
     }
 
-    return [userInfo[0].id, jwt.sign({ email: userInfo[0].email }, process.env.SECRET_KEY)]
+    return {
+      id: userInfo[0].id,
+      username: userInfo[0].username,
+      token: jwt.sign({ email: userInfo[0].email }, process.env.SECRET_KEY)
+    }
 }
 
 const getUserInfo = async (email) => {
