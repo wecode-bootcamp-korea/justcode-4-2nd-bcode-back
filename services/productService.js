@@ -1,25 +1,28 @@
-const productDao = require("../models/productDao");
+const productDao = require('../models/productDao');
 
 const getProductList = async () => {
-  return await productDao.getProductList()
-}
+    return await productDao.getProductList();
+};
 
 const getProductDetail = async (product_id, limit) => {
-  const detail =  await productDao.getProductDetail(Number(product_id), Number(limit))
-  const reviewSum = await productDao.getProductReviewSum(Number(product_id))
+    const detail = await productDao.getProductDetail(
+        Number(product_id),
+        Number(limit)
+    );
+    const reviewSum = await productDao.getProductReviewSum(Number(product_id));
 
-  detail.reviewSum = reviewSum
-  return detail
-}
+    detail.reviewSum = reviewSum;
+    return detail;
+};
 
-const getVisitedProduct = async (product_id) => {
-  product_id = product_id.split(",")
-  product_id = product_id.map(id => Number(id))
-  return await productDao.getVisitedProduct(product_id)
-}
+const getVisitedProduct = async product_id => {
+    product_id = product_id.split(',');
+    product_id = product_id.map(id => Number(id));
+    return await productDao.getVisitedProduct(product_id);
+};
 
 module.exports = {
-  getProductList,
-  getProductDetail,
-  getVisitedProduct
+    getProductList,
+    getProductDetail,
+    getVisitedProduct,
 };
