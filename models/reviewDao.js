@@ -24,18 +24,19 @@ const getReviews = async (productId, limit) => {
     });
 };
 
-const makeReview = async (productId, userId, rating, content) => {
+const makeReview = async (productId, userId, rating, content, imageAddr) => {
     return await prisma.reviews.create({
         data: {
             product_id: productId,
             user_id: userId,
             rating: rating,
             content: content,
+            image: imageAddr,
         },
     });
 };
 
-const uploadReviewImage = async (reviewId, reviewImageAddr) => {
+const uploadReviewImageOnly = async (reviewId, reviewImageAddr) => {
     return await prisma.reviews.update({
         where: {
             id: reviewId,
@@ -57,6 +58,6 @@ const deleteReview = async reviewId => {
 module.exports = {
     getReviews,
     makeReview,
-    uploadReviewImage,
+    uploadReviewImageOnly,
     deleteReview,
 };

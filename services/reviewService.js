@@ -9,13 +9,14 @@ const getReviews = async (productId, limit) => {
     }
 };
 
-const makeReview = async (productId, userId, rating, content) => {
+const makeReview = async (productId, userId, rating, content, imageAddr) => {
     try {
         return await reviewDao.makeReview(
             Number(productId),
             Number(userId),
             Number(rating),
-            content
+            content,
+            imageAddr
         );
     } catch (error) {
         console.log(error);
@@ -23,11 +24,14 @@ const makeReview = async (productId, userId, rating, content) => {
     }
 };
 
-const uploadReviewImage = async (reviewId, reviewImageAddr) => {
+const uploadReviewImageOnly = async (reviewId, reviewImageAddr) => {
     try {
-        return await reviewDao.uploadReviewImage(
-            Number(reviewId),
-            reviewImageAddr
+        return reviewImageAddr.map(
+            async imageAddr =>
+                await reviewDao.uploadReviewImageOnly(
+                    Number(reviewId),
+                    imageAddr
+                )
         );
     } catch (error) {
         console.log(error);
@@ -47,6 +51,6 @@ const deleteReview = async reviewId => {
 module.exports = {
     getReviews,
     makeReview,
-    uploadReviewImage,
+    uploadReviewImageOnly,
     deleteReview,
 };
