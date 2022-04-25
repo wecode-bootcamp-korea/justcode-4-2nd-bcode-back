@@ -35,7 +35,7 @@ const signIn = async (email, password) => {
         throw error
     }
 
-    return [userInfo[0].id, jwt.sign({ email: userInfo[0].email }, process.env.SECRET_KEY)]
+    return [userInfo[0].id,userInfo[0].username, jwt.sign({ email: userInfo[0].email }, process.env.SECRET_KEY)]
 }
 
 const getUserInfo = async (email) => {

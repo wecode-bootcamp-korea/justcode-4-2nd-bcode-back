@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const getUserInfo = async (email) => {
     return await prisma.$queryRaw`
-		SELECT id, email, password 
+		SELECT id, email, password, username 
         FROM users 
         WHERE email = ${email};
 	`
