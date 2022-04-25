@@ -76,9 +76,29 @@ const getProductReviewSum = async (product_id) => {
   })
 }
 
+const getVisitedProduct = async (product_id) => {
+  return await prisma.products.findMany({
+    where: {
+      id: { in: product_id }
+    },
+    select: {
+      id: true,
+      name: true,
+      image_url: true,
+      price_before: true,
+      price_after: true,
+      brands: {
+        select: {
+          name: true
+        }
+      }
+    }
+  })
+}
 
 module.exports = {
   getProductList,
   getProductDetail,
-  getProductReviewSum
+  getProductReviewSum,
+  getVisitedProduct
 };

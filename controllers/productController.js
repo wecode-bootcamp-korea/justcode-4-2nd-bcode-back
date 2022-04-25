@@ -23,8 +23,21 @@ const getProductDetail = async (req, res) => {
   }
 }
 
+const getVisitedProduct = async (req, res) => {
+  try {
+    const { product_id } = req.query;
+
+    const visitedProduct = await productService.getVisitedProduct(product_id);
+
+    return res.status(200).json(visitedProduct)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "SERVER_ERROR "})
+  }
+}
 
 module.exports = {
   getProductList,
-  getProductDetail
+  getProductDetail,
+  getVisitedProduct
 };
