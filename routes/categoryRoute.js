@@ -3,8 +3,10 @@ const router = express.Router();
 
 const categoryController = require("../controllers/categoryController");
 
-router.get("/list", categoryController.categoryList);
-router.get("/:product_id", categoryController.getProductDetail);
-
+router.get("/", categoryController.categoryList);
+router.get("/:id", categoryController.categoryDetail);
+router.get("/highprice/:id", categoryController.categoryHighPrice);
+router.get("/rowprice/:id", categoryController.categoryRowPrice);
+router.get("/review/:id", categoryController.categoryReview);
 
 module.exports = router
