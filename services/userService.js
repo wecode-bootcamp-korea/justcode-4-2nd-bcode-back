@@ -11,7 +11,7 @@ const signUp = async (username, email, password) => {
     }
 
     const encryptedPW = bcrypt.hashSync(password, bcrypt.genSaltSync());
-    const newUser = await userDao.createuUser(username, email, encryptedPW);
+    const newUser = await userDao.createUser(username, email, encryptedPW);
     return newUser;
 };
 

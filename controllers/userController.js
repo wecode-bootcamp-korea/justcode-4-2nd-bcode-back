@@ -23,9 +23,9 @@ const signIn = async (req, res) => {
             .status(200)
             .json({
                 message: 'LOGIN_SUCCESS',
-                id: token[0],
-                username: token[1],
-                jwt: token[2],
+                id,
+                username,
+                jwt: token,
             });
     } catch (err) {
         console.log(err);
