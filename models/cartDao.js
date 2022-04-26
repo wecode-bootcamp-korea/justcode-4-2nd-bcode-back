@@ -1,14 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
-const getCurrentCart = async (user_id) => {
-  return await prisma.carts.findMany({
-    select: {
-      id: true,
-      quantity: true,
-      products: {
+const getCurrentCart = async user_id => {
+    return await prisma.carts.findMany({
         select: {
+            id: true,
             quantity: true,
             products: {
                 select: {
