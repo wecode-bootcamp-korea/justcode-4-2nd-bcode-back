@@ -39,6 +39,20 @@ const uploadReviewImageOnly = async (reviewId, reviewImageAddr) => {
     }
 };
 
+const updateReview = async (reviewId, rating, content, imageAddr) => {
+    try {
+        return await reviewDao.updateReview(
+            Number(reviewId),
+            Number(rating),
+            content,
+            imageAddr
+        );
+    } catch (error) {
+        console.log(error);
+        throw await error;
+    }
+};
+
 const deleteReview = async reviewId => {
     try {
         return await reviewDao.deleteReview(Number(reviewId));
@@ -52,5 +66,6 @@ module.exports = {
     getReviews,
     makeReview,
     uploadReviewImageOnly,
+    updateReview,
     deleteReview,
 };

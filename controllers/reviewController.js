@@ -67,6 +67,29 @@ const uploadReviewImageOnly = async (req, res) => {
     }
 };
 
+const updateReview = async (req, res) => {
+    try {
+        // const { userid } = req.headers;
+        const { reviewId } = req.params;
+        const { rating, content } = req.body;
+        const images = req.files;
+
+        const imagePath = images.map(image => image.path);
+
+        const reviews = await reviewService.updateReview(
+            reviewId,
+            rating,
+            content,
+            imagePath[0]
+        );
+
+        return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const deleteReview = async (req, res) => {
     try {
         const { reviewId } = req.body;
@@ -84,5 +107,6 @@ module.exports = {
     getReviews,
     makeReview,
     uploadReviewImageOnly,
+    updateReview,
     deleteReview,
 };

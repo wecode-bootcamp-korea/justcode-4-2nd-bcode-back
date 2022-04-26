@@ -47,6 +47,19 @@ const uploadReviewImageOnly = async (reviewId, reviewImageAddr) => {
     });
 };
 
+const updateReview = async (reviewId, rating, content, imageAddr) => {
+    return await prisma.reviews.update({
+        where: {
+            id: reviewId,
+        },
+        data: {
+            rating: rating,
+            content: content,
+            image: imageAddr,
+        },
+    });
+};
+
 const deleteReview = async reviewId => {
     return await prisma.reviews.delete({
         where: {
@@ -59,5 +72,6 @@ module.exports = {
     getReviews,
     makeReview,
     uploadReviewImageOnly,
+    updateReview,
     deleteReview,
 };

@@ -61,6 +61,18 @@ router.post(
     reviewController.uploadReviewImageOnly
 );
 
+// PUT
+router.put(
+    '/:reviewId',
+    validateToken.validateToken,
+    makeReviewFolder,
+    upload.array('reviewImage'),
+    function (req, res, next) {
+        next();
+    },
+    reviewController.updateReview
+);
+
 // DELETE
 router.delete('/', validateToken.validateToken, reviewController.deleteReview);
 
