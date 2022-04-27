@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 
 const validateToken = async (req, res, next) => {
     try {
-        const token = await req.headers.authorization;
+        const { token } = await req.headers.authorization;
 
         if (!token || token === 'null' || token === undefined) {
             throw await res.status(400).json({ message: 'UNDEFINED_TOKEN' });
@@ -21,7 +21,7 @@ const validateToken = async (req, res, next) => {
         if (!findUser || findUser === 'null' || findUser === undefined) {
             throw await res.status(404).json({ message: 'USER_NOT_FOUND' });
         }
-
+      
         next();
 
     } catch (err) {
