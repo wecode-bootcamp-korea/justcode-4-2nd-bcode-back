@@ -58,8 +58,21 @@ const deleteItemFromCart = async (req, res) => {
     }
 };
 
+const cleanCart = async (req, res) => {
+    try {
+        const userId = 7;
+        await cartService.cleanCart(userId);
+
+        return res.status(200).json({ message: 'SUCCESS' });
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode || 500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getCurrentCart,
     updateCart,
     deleteItemFromCart,
+    cleanCart,
 };

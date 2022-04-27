@@ -75,10 +75,19 @@ const deleteItemFromCart = async (product_id, user_id) => {
     });
 };
 
+const cleanCart = async user_id => {
+    return await prisma.carts.deleteMany({
+        where: {
+            user_id: user_id,
+        },
+    });
+};
+
 module.exports = {
     getCurrentCart,
     addNewItemToCart,
     addMoreItemToCart,
     updateItemInCart,
     deleteItemFromCart,
+    cleanCart,
 };

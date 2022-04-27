@@ -52,8 +52,17 @@ const deleteItemFromCart = async (product_id, user_id) => {
     }
 };
 
+const cleanCart = async user_id => {
+    try {
+        return await cartDao.cleanCart(Number(user_id));
+    } catch (error) {
+        throw await error;
+    }
+};
+
 module.exports = {
     getCurrentCart,
     updateCart,
     deleteItemFromCart,
+    cleanCart,
 };
