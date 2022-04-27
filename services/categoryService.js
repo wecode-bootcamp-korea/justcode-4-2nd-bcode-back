@@ -8,6 +8,14 @@ const categoryDetail = async (id) => {
   return await categorytDao.getCategoryDetail(id)
 }
 
+// const categoryDetail = async (id, limit, highprice, rowprice, review) => {
+//   return await categorytDao.getCategoryDetail(id, limit, highprice, rowprice, review)
+// }
+
+const categoryDetailLimit = async (id, limit) => {
+  return await categorytDao.getCategoryDetailLimit(id, limit)
+}
+
 const categoryHighPrice = async (id) => {
   return await categorytDao.getHighPrice(id)
 }
@@ -24,6 +32,7 @@ const categoryReview = async (id) => {
 module.exports = {
   categoryList,
   categoryDetail,
+  categoryDetailLimit,
   categoryHighPrice,
   categoryRowPrice,
   categoryReview

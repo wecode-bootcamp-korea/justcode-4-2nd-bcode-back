@@ -56,7 +56,7 @@ INSERT INTO products (name, image_url, price_after, price_before, brand_id) VALU
 ('자연 비타민 패키지','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/41.jpg',70000,70000,1),
 ('비타민C','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/42.jpg',15000,18000,2),
 ('오메가3','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/43.jpg',18000,20000,3),
-('다이어트 효소','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/.44jpg',48000,50000,4),
+('다이어트 효소','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/44.jpg',48000,50000,4),
 ('진저 로얄젤리','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/45.jpg',72000,80000,5),
 ('블루베리 프로틴','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/46.jpg',42000,50000,6),
 ('콜라겐 젤리 세트','https://raw.githubusercontent.com/youngseoKim-kr/B-code-img/master/img/47.jpg',89000,100000,7),
@@ -87,9 +87,10 @@ VALUES
 
 INSERT INTO categories_products (product_id,category_id) 
 VALUES
-(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(20,1),(21,1),
-(22,1),(23,1),(24,1),(25,1),(26,1),(27,1),(11,2),(12,2),(13,2),(14,2),(15,2),
-(16,2),(17,2),(18,2),(19,2),(20,2),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),
-(27,3),(28,3),(29,3),(30,3),(31,4),(32,4),(33,4),(34,4),(35,4),(36,4),(37,4),
-(38,4),(39,4),(40,4),(41,5),(42,5),(43,5),(44,5),(45,5),(46,5),(47,5),(48,5),
-(49,5),(50,5),(51,6),(52,6),(53,6),(54,6),(55,6),(56,6),(57,6),(58,6),(59,6),(60,6);
+(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),
+(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(27,1),
+(11,2),(12,2),(13,2),(14,2),(15,2),(16,2),(17,2),(18,2),(19,2),(20,2),
+(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),(27,3),(28,3),(29,3),(30,3),
+(31,4),(32,4),(33,4),(34,4),(35,4),(36,4),(37,4),(38,4),(39,4),(40,4),
+(41,5),(42,5),(43,5),(44,5),(45,5),(46,5),(47,5),(48,5),(49,5),(50,5),
+(51,6),(52,6),(53,6),(54,6),(55,6),(56,6),(57,6),(58,6),(59,6),(60,6);
