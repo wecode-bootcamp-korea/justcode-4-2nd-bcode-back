@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+
 const productService = require('../services/productService');
+const userService = require('../models/userDao');
 
 const getProductList = async (req, res) => {
     try {
@@ -14,14 +17,22 @@ const getProductDetail = async (req, res) => {
     try {
         const { product_id } = req.params;
         const { limit } = req.query;
+        const token = req.headers.authorization;
+
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+        const userInfo = await userService.getUserInfo(decodedToken.email);
+        const userId = await userInfo[0].id;
 
         const productDetail = await productService.getProductDetail(
             product_id,
             limit
         );
 
-        return res.status(200).json(productDetail);
+        return res
+            .status(200)
+            .json({ userId: userId, productDetail: productDetail });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'SERVER_ERROR' });
     }
 };
@@ -41,8 +52,23 @@ const getVisitedProduct = async (req, res) => {
     }
 };
 
+const searchProduct = async (req, res) => {
+    try {
+        const { name } = req.query;
+
+        search = { name: name };
+        const searchedProduct = await productService.searchProduct(search);
+
+        return res.status(200).json(searchedProduct);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'SERVER_ERROR' });
+    }
+};
+
 module.exports = {
     getProductList,
     getProductDetail,
     getVisitedProduct,
+    searchProduct,
 };
