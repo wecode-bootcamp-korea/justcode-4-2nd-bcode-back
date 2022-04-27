@@ -21,8 +21,13 @@ const getVisitedProduct = async product_id => {
     return await productDao.getVisitedProduct(product_id);
 };
 
+const searchProduct = async name => {
+    return await productDao.searchProduct(name);
+};
+
 module.exports = {
     getProductList,
     getProductDetail,
     getVisitedProduct,
+    searchProduct,
 };

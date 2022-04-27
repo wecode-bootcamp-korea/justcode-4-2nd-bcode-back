@@ -23,6 +23,9 @@ const updateCart = async (product_id, user_id, quantity, setQuantity) => {
                 Number(quantity)
             );
         } else if (currenProductsIdx !== -1 && !setQuantity) {
+            if (currentCart[currenProductsIdx].quantity + quantity > 10) {
+                quantity = 10 - currentCart[currenProductsIdx].quantity;
+            }
             await cartDao.addMoreItemToCart(
                 Number(product_id),
                 Number(user_id),
