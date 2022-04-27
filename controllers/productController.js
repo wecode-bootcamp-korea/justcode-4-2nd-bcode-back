@@ -19,9 +19,18 @@ const getProductDetail = async (req, res) => {
         const { limit } = req.query;
         const token = req.headers.authorization;
 
-        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-        const userInfo = await userService.getUserInfo(decodedToken.email);
-        const userId = await userInfo[0].id;
+        if (!product_id || !limit) {
+            return res
+                .status(400)
+                .json({ message: 'MISSING_PRODUCTID_OR_LIMIT' });
+        }
+
+        let userId = null;
+        if (token) {
+            const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+            const userInfo = await userService.getUserInfo(decodedToken.email);
+            userId = await userInfo[0].id;
+        }
 
         const productDetail = await productService.getProductDetail(
             product_id,
@@ -41,6 +50,12 @@ const getVisitedProduct = async (req, res) => {
     try {
         const { product_id } = req.query;
 
+        if (!product_id) {
+            return res
+                .status(400)
+                .json({ message: 'NO_PRODUCT_ID', visitedProduct: [] });
+        }
+
         const visitedProduct = await productService.getVisitedProduct(
             product_id
         );
@@ -55,6 +70,10 @@ const getVisitedProduct = async (req, res) => {
 const searchProduct = async (req, res) => {
     try {
         const { name } = req.query;
+
+        if (!name) {
+            return res.status(400).json({ message: 'MISSING_NAME' });
+        }
 
         search = { name: name };
         const searchedProduct = await productService.searchProduct(search);
