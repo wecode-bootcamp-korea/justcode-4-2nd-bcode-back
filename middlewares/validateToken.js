@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 
 const validateToken = async (req, res, next) => {
     try {
-        const { token } = await req.headers;
+        const token = await req.headers.authorization;
 
         // const accessToken = await req.headers.authorization;   //포스트맨 bearer token 분할용 추후 삭제 
         // realtoken = accessToken.split(' ')
