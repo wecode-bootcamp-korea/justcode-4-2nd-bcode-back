@@ -13,9 +13,33 @@ const categoryList = async (req, res) => {
 
 const categoryDetail = async (req, res) => {
     try {
-        const id = req.params.id;
+        const { id } = req.params;
         const categoryDetail = await categoryService.categoryDetail(id)
         return res.status(200).json(categoryDetail)
+    } catch (err) {
+        console.log(err)
+        return res.status(err.status || 500).json({ message: err.message })
+    }
+}
+
+// const categoryDetail = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { limit, highprice, rowprice, review } = req.query
+//         const categoryDetail = await categoryService.categoryDetail(id, limit, highprice, rowprice, review)
+//         return res.status(200).json(categoryDetail)
+//     } catch (err) {
+//         console.log(err)
+//         return res.status(err.status || 500).json({ message: err.message })
+//     }
+// }
+
+const categoryDetailLimit = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { limit } = req.query;
+        const categoryDetailLimit = await categoryService.categoryDetailLimit(id, limit)
+        return res.status(200).json(categoryDetailLimit)
     } catch (err) {
         console.log(err)
         return res.status(err.status || 500).json({ message: err.message })
@@ -60,6 +84,7 @@ const categoryReview = async (req, res) => {
 module.exports = {
     categoryList,
     categoryDetail,
+    categoryDetailLimit,
     categoryHighPrice,
     categoryRowPrice,
     categoryReview
