@@ -24,23 +24,19 @@ const getCategoryDetail = async (id) => {
 
 // const getCategoryDetail = async (id, limit, highprice, rowprice, review) => {
 //   return await prisma.$queryRaw`
-//   SELECT p.id, p.name, p.image_url, p.price_before, p.price_after, b.name AS "brand_name", 
-//          r.ratingAvg, r.contentCnt, cp.category_id
-//   FROM products p
-//   LEFT JOIN categories_products cp
-//   ON p.id = cp.id
+//   SELECT cp.id, cp.product_id, cp.category_id, p.id, p.name, p.image_url, p.price_before, p.price_after,r.ratingAvg, r.contentCnt,b.name AS "brand_name"
+//   FROM categories_products cp
+//   LEFT JOIN products p
+//   ON cp.product_id = p.id
+//   LEFT JOIN (SELECT r.product_id, AVG(r.rating) AS ratingAvg, COUNT(r.content) AS contentCnt FROM reviews r GROUP BY r.product_id ) r
+//   ON r.product_id = p.id
 //   LEFT JOIN brands b
 //   ON b.id = p.brand_id
-//   LEFT JOIN (
-//     SELECT r.product_id, AVG(r.rating) AS ratingAvg, COUNT(r.content) AS contentCnt 
-//     FROM reviews r 
-//     GROUP BY r.product_id ) r
-//   ON r.product_id = p.id
 //   WHERE cp.category_id=${id}
-//   ${limit ? Prisma.sql`LIMIT ${limit}` : Prisma.empty}
-//   ${ORDER ? Prisma.sql`ORDER BY p.price_after DESC ${highprice}` : Prisma.empty}
-//   ${ORDER ? Prisma.sql`ORDER BY p.price_after ${rowprice}` : Prisma.empty}
-//   ${ORDER ? Prisma.sql`ORDER BY r.ratingAvg DESC ${review}` : Prisma.empty}
+//   ${limit ? Prisma.sql`LIMIT ${limit}` : Prisma.empty},
+//   ${ORDER ? Prisma.sql`ORDER BY ${highprice} DESC` : Prisma.empty},
+//   ${ORDER ? Prisma.sql`ORDER BY ${rowprice}` : Prisma.empty},
+//   ${ORDER ? Prisma.sql`ORDER BY ${review} DESC ` : Prisma.empty}
 // `
 // }
 
@@ -55,7 +51,7 @@ async function getCategoryDetailLimit(id, limit) {
   ON r.product_id = p.id
   LEFT JOIN brands b
   ON b.id = p.brand_id
-  WHERE cp.category_id=${id};
+  WHERE cp.category_id=${id}
   LIMIT ${limit};
 `;
 }
