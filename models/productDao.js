@@ -96,9 +96,46 @@ const getVisitedProduct = async product_id => {
     });
 };
 
+const searchProduct = async name => {
+    name = '%' + name.name + '%';
+    return await prisma.$transaction([
+        prisma.$queryRaw`
+            SELECT 
+                p.id, p.name, p.image_url, b.name AS brand_name, 
+                p.price_before, p.price_after, p.created_at, p.updated_at
+            FROM 
+                products p
+            JOIN
+                brands b
+            ON
+                p.brand_id = b.id
+            WHERE
+                p.name
+            LIKE
+                ${name}
+        `,
+        prisma.$queryRaw`
+        SELECT 
+            p.id, p.name, p.image_url, b.name AS brand_name, 
+            p.price_before, p.price_after, p.created_at, p.updated_at
+        FROM 
+            products p
+        JOIN
+            brands b
+        ON
+            p.brand_id = b.id
+        WHERE
+            b.name
+        LIKE
+            ${name}
+
+        `,
+    ]);
+};
 module.exports = {
     getProductList,
     getProductDetail,
     getProductReviewSum,
     getVisitedProduct,
+    searchProduct,
 };
