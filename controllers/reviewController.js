@@ -1,12 +1,14 @@
-const fs = require('fs');
-const path = require('path');
 const reviewService = require('../services/reviewService');
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = process.env.SECRET_KEY;
 
 const getReviews = async (req, res) => {
     try {
         const { productId, limit } = req.query;
+
+        if (!productId || !limit) {
+            return res
+                .status(400)
+                .json({ message: 'MISSING_PRODUCTID_OR_LIMIT' });
+        }
 
         const reviews = await reviewService.getReviews(productId, limit);
 
@@ -19,19 +21,39 @@ const getReviews = async (req, res) => {
 
 const makeReview = async (req, res) => {
     try {
-        // const { userid } = req.headers;
         const { productId, rating, content } = req.body;
         const images = req.files;
 
-        const imagePath = images.map(image => image.path);
+        if (!productId || !rating || !content) {
+            return res
+                .status(400)
+                .json({ message: 'MISSING_PRODUCTID_OR_RATING_OR_CONTENT' });
+        }
 
-        const reviews = await reviewService.makeReview(
-            productId,
-            userId,
-            rating,
-            content,
-            imagePath[0]
-        );
+        let reviews = null;
+        if (images.length !== 0) {
+            reviews = await Promise.all(
+                images.map(
+                    async image =>
+                        await reviewService.makeReview(
+                            productId,
+                            userId,
+                            rating,
+                            content,
+                            image.filename
+                        )
+                )
+            );
+            reviews = reviews[0];
+        } else {
+            reviews = await reviewService.makeReview(
+                productId,
+                userId,
+                rating,
+                content,
+                null
+            );
+        }
 
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
@@ -40,48 +62,40 @@ const makeReview = async (req, res) => {
     }
 };
 
-const uploadReviewImageOnly = async (req, res) => {
-    try {
-        const { reviewId } = req.query;
-
-        const images = req.files;
-        const imagePath = images.map(image => image.path);
-        const imageType = images.map(image => image.mimetype);
-
-        await reviewService.uploadReviewImageOnly(reviewId, imagePath);
-
-        // response 객체에 이미지를 하나만 보낼 수 있기 때문에 제일 처음 이미지만 반환합니다.
-        fs.readFile(imagePath[0], function (error, data) {
-            if (error) {
-                return res.status(500).json({ message: 'SERVER_ERROR' });
-            } else {
-                return res
-                    .status(200)
-                    .header({ 'Content-Type': imageType[0] })
-                    .end(data);
-            }
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(error.statusCode || 500).json({ message: error.message });
-    }
-};
-
 const updateReview = async (req, res) => {
     try {
-        // const { userid } = req.headers;
         const { reviewId } = req.params;
         const { rating, content } = req.body;
         const images = req.files;
 
-        const imagePath = images.map(image => image.path);
+        if (!reviewId || !rating || !content) {
+            return res
+                .status(400)
+                .json({ message: 'MISSING_PRODUCTID_OR_RATING_OR_CONTENT' });
+        }
 
-        const reviews = await reviewService.updateReview(
-            reviewId,
-            rating,
-            content,
-            imagePath[0]
-        );
+        let reviews = null;
+        if (images.length !== 0) {
+            reviews = await Promise.all(
+                images.map(
+                    async image =>
+                        await reviewService.updateReview(
+                            reviewId,
+                            rating,
+                            content,
+                            image.filename
+                        )
+                )
+            );
+            reviews = reviews[0];
+        } else {
+            reviews = await reviewService.updateReview(
+                reviewId,
+                rating,
+                content,
+                null
+            );
+        }
 
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
@@ -92,7 +106,11 @@ const updateReview = async (req, res) => {
 
 const deleteReview = async (req, res) => {
     try {
-        const { reviewId } = req.body;
+        const { reviewId } = req.params;
+
+        if (!reviewId) {
+            return res.status(400).json({ message: 'MISSING_REVIEWID' });
+        }
 
         await reviewService.deleteReview(reviewId);
 
@@ -106,7 +124,6 @@ const deleteReview = async (req, res) => {
 module.exports = {
     getReviews,
     makeReview,
-    uploadReviewImageOnly,
     updateReview,
     deleteReview,
 };

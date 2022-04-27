@@ -50,19 +50,9 @@ router.post(
     },
     reviewController.makeReview
 );
-router.post(
-    '/image',
-    validateToken.validateToken,
-    makeReviewFolder,
-    upload.array('reviewImage'),
-    function (req, res, next) {
-        next();
-    },
-    reviewController.uploadReviewImageOnly
-);
 
-// PUT
-router.put(
+// PATCH
+router.patch(
     '/:reviewId',
     validateToken.validateToken,
     makeReviewFolder,
@@ -74,6 +64,10 @@ router.put(
 );
 
 // DELETE
-router.delete('/', validateToken.validateToken, reviewController.deleteReview);
+router.delete(
+    '/:reviewId',
+    validateToken.validateToken,
+    reviewController.deleteReview
+);
 
 module.exports = router;
