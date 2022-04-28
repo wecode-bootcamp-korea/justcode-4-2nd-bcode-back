@@ -6,8 +6,8 @@ const getCurrentCart = async (req, res) => {
     try {
         const token = await req.headers.authorization;
 
-        if (!token) {
-            throw await res
+        if (token === 'null' || token === 'undefined') {
+            return await res
                 .status(200)
                 .json({ message: 'NEED_TO_LOGIN', currentCart: [] });
         }
@@ -30,7 +30,7 @@ const updateCart = async (req, res) => {
         const { productId } = req.params;
         const { quantity, setQuantity } = req.query;
 
-        if (!productId || !quantity || !setQuantity) {
+        if ((!productId && !quantity) || (!productId && !setQuantity)) {
             return res.status(400).json({
                 message: 'MISSING_PRODUCTID_OR_QUANTITY_OR_SETQUANTITY',
             });
