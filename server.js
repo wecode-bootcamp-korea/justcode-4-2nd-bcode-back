@@ -17,12 +17,12 @@ app.get('/ping', (req, res) => {
     res.json({ message: 'pong' });
 });
 
-const server = http.createServer(app);
+const Server = http.createServer(app);
 const PORT = process.env.PORT;
 
 const start = async () => {
     try {
-        server.listen(PORT, () =>
+        Server.listen(PORT, () =>
             console.log(`Server is listening on ${PORT}`)
         );
     } catch (err) {
@@ -32,3 +32,37 @@ const start = async () => {
 };
 
 start();
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server: Server });
+
+const sockets = [];
+let countPersons = 1;
+
+const handleConnection = socket => {
+    console.log('Connected from Browser!');
+    sockets.push(socket);
+    socket['nickname'] = `Visitor ${countPersons++}`;
+    socket.on('close', handleSocketClose);
+    socket.on('message', msg => {
+        const message = JSON.parse(msg);
+        switch (message.type) {
+            case 'new_message':
+                sockets.forEach(a => {
+                    a.send(`${socket.nickname}: ${message.payload}`);
+                });
+                break;
+            case 'nickname':
+                socket['nickname'] = message.payload;
+                break;
+            default:
+        }
+    });
+};
+
+const handleSocketClose = () => {
+    console.log('Disconnected from Browser!');
+};
+
+wss.on('connection', handleConnection);
+wss.on('close', handleSocketClose);
