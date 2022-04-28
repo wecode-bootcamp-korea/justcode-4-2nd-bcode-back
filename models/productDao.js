@@ -68,7 +68,7 @@ const getProductReviewSum = async product_id => {
             rating: true,
         },
         _count: {
-            id: true,
+            content: true,
         },
         where: {
             product_id: product_id,
