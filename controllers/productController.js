@@ -26,7 +26,7 @@ const getProductDetail = async (req, res) => {
         }
 
         let userId = null;
-        if (token !== 'null' || token !== 'undefined') {
+        if (token !== 'null' && token !== 'undefined') {
             const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
             const userInfo = await userService.getUserInfo(decodedToken.email);
             userId = await userInfo[0].id;
