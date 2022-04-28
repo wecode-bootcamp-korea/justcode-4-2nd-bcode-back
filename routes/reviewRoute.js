@@ -39,6 +39,12 @@ const upload = multer({
 router.get('/', reviewController.getReviews);
 
 // POST
+router.post(
+    '/likes',
+    validateToken.validateToken,
+    reviewController.makeReviewLikes
+);
+
 // form태그 name은 "reviewImage"로 일치시켜야 파일을 받을 수 있습니다.
 router.post(
     '/',
@@ -64,6 +70,11 @@ router.patch(
 );
 
 // DELETE
+router.delete(
+    '/likes',
+    validateToken.validateToken,
+    reviewController.deleteReviewLikes
+);
 router.delete('/:reviewId', reviewController.deleteReview);
 
 module.exports = router;

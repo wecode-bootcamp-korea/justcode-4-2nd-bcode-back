@@ -4,14 +4,19 @@ const getProductList = async () => {
     return await productDao.getProductList();
 };
 
-const getProductDetail = async (product_id, limit) => {
+const getProductDetail = async (productId, limit, userId) => {
     const detail = await productDao.getProductDetail(
-        Number(product_id),
-        Number(limit)
+        Number(productId),
+        Number(limit),
+        Number(userId)
     );
-    const reviewSum = await productDao.getProductReviewSum(Number(product_id));
+    const reviewSum = await productDao.getProductReviewSum(Number(productId));
+    const reviewLikesSum = await productDao.getReviewLikesSum(
+        Number(productId)
+    );
 
     detail.reviewSum = reviewSum;
+    detail.reviewLikesSum = reviewLikesSum;
     return detail;
 };
 

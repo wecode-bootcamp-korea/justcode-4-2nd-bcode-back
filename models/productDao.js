@@ -21,7 +21,7 @@ const getProductList = async () => {
   `;
 };
 
-const getProductDetail = async (product_id, limit) => {
+const getProductDetail = async (product_id, limit, userId) => {
     return await prisma.products.findUnique({
         select: {
             name: true,
@@ -53,6 +53,14 @@ const getProductDetail = async (product_id, limit) => {
                             id: true,
                         },
                     },
+                    reviews_likes: {
+                        select: {
+                            id: true,
+                        },
+                        where: {
+                            user_id: userId,
+                        },
+                    },
                 },
             },
         },
@@ -74,6 +82,19 @@ const getProductReviewSum = async product_id => {
             product_id: product_id,
         },
     });
+};
+
+const getReviewLikesSum = async product_id => {
+    return await prisma.$queryRaw`
+        SELECT r.id, count(rl.id) as like_count
+        FROM reviews r
+        JOIN reviews_likes rl
+        ON rl.review_id = r.id
+        
+        WHERE r.product_id = ${product_id}
+        GROUP BY rl.review_id
+        
+    `;
 };
 
 const getVisitedProduct = async product_id => {
@@ -124,6 +145,7 @@ module.exports = {
     getProductList,
     getProductDetail,
     getProductReviewSum,
+    getReviewLikesSum,
     getVisitedProduct,
     searchProduct,
 };
