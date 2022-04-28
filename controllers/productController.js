@@ -34,7 +34,8 @@ const getProductDetail = async (req, res) => {
 
         const productDetail = await productService.getProductDetail(
             product_id,
-            limit
+            limit,
+            userId
         );
 
         return res

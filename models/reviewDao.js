@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const getReviews = async (productId, limit) => {
+const getReviews = async (productId, limit, userId) => {
     return await prisma.reviews.findMany({
         take: limit,
         where: {
@@ -20,6 +20,14 @@ const getReviews = async (productId, limit) => {
             image: true,
             created_at: true,
             updated_at: true,
+            reviews_likes: {
+                select: {
+                    id: true,
+                },
+                where: {
+                    user_id: userId,
+                },
+            },
         },
     });
 };
@@ -32,6 +40,27 @@ const makeReview = async (productId, userId, rating, content, imageAddr) => {
             rating: rating,
             content: content,
             image: imageAddr,
+        },
+    });
+};
+
+const makeReviewLikes = async (reviewId, userId) => {
+    return await prisma.reviews_likes.create({
+        data: {
+            review_id: reviewId,
+            user_id: userId,
+        },
+    });
+};
+
+const getReviewLikes = async (reviewId, userId) => {
+    return await prisma.reviews_likes.findMany({
+        select: {
+            id: true,
+        },
+        where: {
+            review_id: reviewId,
+            user_id: userId,
         },
     });
 };
@@ -57,9 +86,20 @@ const deleteReview = async reviewId => {
     });
 };
 
+const deleteReviewLikes = async reviewLikesId => {
+    return await prisma.reviews_likes.delete({
+        where: {
+            id: reviewLikesId,
+        },
+    });
+};
+
 module.exports = {
     getReviews,
+    getReviewLikes,
     makeReview,
+    makeReviewLikes,
     updateReview,
     deleteReview,
+    deleteReviewLikes,
 };
