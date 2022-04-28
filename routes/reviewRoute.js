@@ -71,7 +71,7 @@ router.patch(
 
 // DELETE
 router.delete(
-    '/likes',
+    '/likes/:reviewLikesId',
     validateToken.validateToken,
     reviewController.deleteReviewLikes
 );

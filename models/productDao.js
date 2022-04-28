@@ -52,11 +52,6 @@ const getProductDetail = async (product_id, limit, userId) => {
                         select: {
                             id: true,
                         },
-                    },
-                    reviews_likes: {
-                        select: {
-                            id: true,
-                        },
                         where: {
                             user_id: userId,
                         },

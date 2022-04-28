@@ -29,7 +29,7 @@ const getReviews = async (req, res) => {
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -72,7 +72,7 @@ const makeReview = async (req, res) => {
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -88,7 +88,8 @@ const makeReviewLikes = async (req, res) => {
 
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error);
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -130,7 +131,7 @@ const updateReview = async (req, res) => {
         return res.status(200).json({ message: 'SUCCESS', reviews: reviews });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -147,13 +148,15 @@ const deleteReview = async (req, res) => {
         return res.status(200).json({ message: 'SUCCESS' });
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json({ message: error.message });
+        return res
+            .status(error.statusCode || 500)
+            .json({ message: 'SERVER_ERROR' });
     }
 };
 
 const deleteReviewLikes = async (req, res) => {
     try {
-        const { reviewLikesId } = req.body;
+        const { reviewLikesId } = req.params;
 
         if (reviewLikesId === 'null' || reviewLikesId === 'undefined') {
             return res.status(400).json({ message: 'MISSING_REVIEWID' });
@@ -164,7 +167,9 @@ const deleteReviewLikes = async (req, res) => {
         return res.status(200).json({ message: 'SUCCESS' });
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json({ message: error.message });
+        return res
+            .status(error.statusCode || 500)
+            .json({ message: 'SERVER_ERROR' });
     }
 };
 
