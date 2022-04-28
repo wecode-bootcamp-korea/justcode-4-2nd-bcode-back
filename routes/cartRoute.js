@@ -4,7 +4,7 @@ const router = express.Router();
 const cartController = require('../controllers/cartController');
 const validateToken = require('../middlewares/validateToken');
 
-router.get('/now', validateToken.validateToken, cartController.getCurrentCart);
+router.get('/now', cartController.getCurrentCart);
 router.put(
     '/:productId',
     validateToken.validateToken,
