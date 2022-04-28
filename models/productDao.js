@@ -113,22 +113,10 @@ const searchProduct = async name => {
                 p.name
             LIKE
                 ${name}
-        `,
-        prisma.$queryRaw`
-        SELECT 
-            p.id, p.name, p.image_url, b.name AS brand_name, 
-            p.price_before, p.price_after, p.created_at, p.updated_at
-        FROM 
-            products p
-        JOIN
-            brands b
-        ON
-            p.brand_id = b.id
-        WHERE
-            b.name
-        LIKE
-            ${name}
-
+            OR
+                b.name
+            LIKE
+                ${name}
         `,
     ]);
 };

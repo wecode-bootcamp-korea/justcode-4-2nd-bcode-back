@@ -78,7 +78,7 @@ const searchProduct = async (req, res) => {
         search = { name: name };
         const searchedProduct = await productService.searchProduct(search);
 
-        return res.status(200).json(searchedProduct);
+        return res.status(200).json(searchedProduct[0]);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'SERVER_ERROR' });
