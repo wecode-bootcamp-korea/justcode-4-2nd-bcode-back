@@ -14,8 +14,8 @@ const categoryList = async (req, res) => {
 const categoryDetail = async (req, res) => {
     try {
         const { id } = req.params;
-        const { limit, highprice, rowprice, review } = req.query
-        const categoryDetail = await categoryService.categoryDetail(id, limit, highprice, rowprice, review)
+        const { limit, highprice, lowprice, review } = req.query
+        const categoryDetail = await categoryService.categoryDetail(id, limit, highprice, lowprice, review)
         return res.status(200).json(categoryDetail)
     } catch (err) {
         console.log(err)

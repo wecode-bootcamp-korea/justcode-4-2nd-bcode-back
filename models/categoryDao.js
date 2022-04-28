@@ -7,7 +7,7 @@ const getCategoryList = async () => {
   `
 }
 
-const getCategoryDetail = async (id, limit, highprice, rowprice, review) => {
+const getCategoryDetail = async (id, limit, highprice, lowprice, review) => {
   return await prisma.$queryRaw`
   SELECT cp.id, cp.product_id, cp.category_id, p.id, p.name, p.image_url, p.price_before, p.price_after,r.ratingAvg, r.contentCnt,b.name AS "brand_name"
   FROM categories_products cp
@@ -20,7 +20,7 @@ const getCategoryDetail = async (id, limit, highprice, rowprice, review) => {
   WHERE cp.category_id=${id}
   ${limit ? Prisma.sql`LIMIT ${limit}` : Prisma.empty}
   ${highprice ? Prisma.sql`ORDER BY p.price_after DESC` : Prisma.empty}
-  ${rowprice ? Prisma.sql`ORDER BY p.price_after` : Prisma.empty}
+  ${lowprice ? Prisma.sql`ORDER BY p.price_after` : Prisma.empty}
   ${review ? Prisma.sql`ORDER BY r.ratingAvg DESC ` : Prisma.empty}
 `
 }
