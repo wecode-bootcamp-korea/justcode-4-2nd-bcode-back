@@ -64,10 +64,6 @@ router.patch(
 );
 
 // DELETE
-router.delete(
-    '/:reviewId',
-    validateToken.validateToken,
-    reviewController.deleteReview
-);
+router.delete('/:reviewId', reviewController.deleteReview);
 
 module.exports = router;
