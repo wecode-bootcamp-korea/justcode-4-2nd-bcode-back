@@ -36,16 +36,13 @@ start();
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ server: Server });
 
-app.set('wss', wss);
-
 const sockets = [];
 let countPersons = 1;
 
-const handleConnection = (socket, req) => {
+const handleConnection = socket => {
     console.log('Connected from Browser!');
     sockets.push(socket);
     socket['nickname'] = `Visitor ${countPersons++}`;
-    socket.location = req.url.split('/')[2];
     socket.on('message', msg => {
         const message = JSON.parse(msg);
         switch (message.type) {
