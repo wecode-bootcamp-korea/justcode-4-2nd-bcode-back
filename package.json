@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.4"
+    "multer": "^1.4.4",
+    "ws": "^8.5.0"
   }
 }
