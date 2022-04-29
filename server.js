@@ -36,20 +36,24 @@ start();
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ server: Server });
 
+app.set('wss', wss);
+
 const sockets = [];
 let countPersons = 1;
 
-const handleConnection = socket => {
+const handleConnection = (socket, req) => {
     console.log('Connected from Browser!');
     sockets.push(socket);
     socket['nickname'] = `Visitor ${countPersons++}`;
-    socket.on('close', handleSocketClose);
+    socket.location = req.url.split('/')[2];
     socket.on('message', msg => {
         const message = JSON.parse(msg);
         switch (message.type) {
             case 'new_message':
                 sockets.forEach(a => {
-                    a.send(`${socket.nickname}: ${message.payload}`);
+                    if (a !== socket) {
+                        a.send(`${socket.nickname}: ${message.payload}`);
+                    }
                 });
                 break;
             case 'nickname':
@@ -58,6 +62,7 @@ const handleConnection = socket => {
             default:
         }
     });
+    socket.on('close', handleSocketClose);
 };
 
 const handleSocketClose = () => {
