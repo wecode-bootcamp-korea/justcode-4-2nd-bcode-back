@@ -11,12 +11,12 @@ const categoryList = async (req, res) => {
     }
 }
 
-const categoryDetail = async (req, res) => {
+const categoryProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const { limit, highprice, lowprice, review } = req.query
-        const categoryDetail = await categoryService.categoryDetail(id, limit, highprice, lowprice, review)
-        return res.status(200).json(categoryDetail)
+        const categoryProduct = await categoryService.categoryProduct(id, limit, highprice, lowprice, review)
+        return res.status(200).json(categoryProduct)
     } catch (err) {
         console.log(err)
         return res.status(err.status || 500).json({ message: err.message })
@@ -25,5 +25,5 @@ const categoryDetail = async (req, res) => {
 
 module.exports = {
     categoryList,
-    categoryDetail
+    categoryProduct
 }
