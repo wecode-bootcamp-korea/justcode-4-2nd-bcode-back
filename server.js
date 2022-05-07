@@ -1,8 +1,11 @@
 const http = require('http');
+const WebSocket = require('ws');
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const routes = require('./routes');
 const cors = require('cors');
+const routes = require('./routes');
+const chatService = require('./services/chatService');
+const PORT = process.env.PORT;
 
 const prisma = new PrismaClient();
 
@@ -18,13 +21,15 @@ app.get('/ping', (req, res) => {
 });
 
 const Server = http.createServer(app);
-const PORT = process.env.PORT;
+const wss = new WebSocket.Server({ server: Server });
 
 const start = async () => {
     try {
         Server.listen(PORT, () =>
             console.log(`Server is listening on ${PORT}`)
         );
+
+        wss.on('connection', chatService.handleConnection);
     } catch (err) {
         console.error(err);
         await prisma.$disconnect();
@@ -32,39 +37,3 @@ const start = async () => {
 };
 
 start();
-
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server: Server });
-
-const sockets = [];
-let countPersons = 1;
-
-const handleConnection = socket => {
-    console.log('Connected from Browser!');
-    sockets.push(socket);
-    socket['nickname'] = `Visitor ${countPersons++}`;
-    socket.on('message', msg => {
-        const message = JSON.parse(msg);
-        switch (message.type) {
-            case 'new_message':
-                sockets.forEach(a => {
-                    if (a !== socket) {
-                        a.send(`${socket.nickname}: ${message.payload}`);
-                    }
-                });
-                break;
-            case 'nickname':
-                socket['nickname'] = message.payload;
-                break;
-            default:
-        }
-    });
-    socket.on('close', handleSocketClose);
-};
-
-const handleSocketClose = () => {
-    console.log('Disconnected from Browser!');
-};
-
-wss.on('connection', handleConnection);
-wss.on('close', handleSocketClose);
