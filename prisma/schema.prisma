@@ -14,7 +14,7 @@ model Categories {
   id   Int    @id @default(autoincrement())
   name String
 
-  Categories_products Categories_products[]
+  categories_products Categories_products[]
   @@map("categories")
 }
 
@@ -22,19 +22,17 @@ model Products {
   id           Int      @id @default(autoincrement())
   name         String
   image_url    String
+  brand_id     Int
   price_before Decimal  @db.Decimal(10, 0)
   price_after  Decimal  @db.Decimal(10, 0)
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now())
-  brand_id     Int
-
-
-  Categories_products Categories_products[]
+  
   brands              Brands                @relation(fields: [brand_id], references: [id])
 
-  Carts   Carts[]
-  Reviews Reviews[]
-
+  categories_products Categories_products[]
+  carts   Carts[]
+  reviews Reviews[]
   @@map("products")
 }
 
@@ -51,24 +49,22 @@ model Reviews {
   products Products @relation(fields: [product_id], references: [id])
   users    Users    @relation(fields: [user_id], references: [id])
 
-
-  Reviews_likes Reviews_likes[]
+  reviews_likes Reviews_likes[]
   @@map("reviews")
 }
 
 model Users {
   id         Int      @id @default(autoincrement())
-  name       String
+  username   String
   email      String   @unique
   password   String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  deleted_at DateTime @default(now())
+  deleted_at DateTime?
 
-
-  Carts         Carts[]
-  Reviews       Reviews[]
-  Reviews_likes Reviews_likes[]
+  carts         Carts[]
+  reviews       Reviews[]
+  reviews_likes Reviews_likes[]
   @@map("users")
 }
 
@@ -98,7 +94,7 @@ model Brands {
   id   Int    @id @default(autoincrement())
   name String
 
-  Products Products[]
+  products Products[]
   @@map("brands")
 }
 
@@ -107,10 +103,7 @@ model Categories_products {
   product_id  Int
   category_id Int
 
-
-
   categories Categories @relation(fields: [category_id], references: [id])
   products   Products   @relation(fields: [product_id], references: [id])
-
   @@map("categories_products")
 }
